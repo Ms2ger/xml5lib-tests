@@ -8,7 +8,7 @@
 <a1 xmlns:xml = "www.example.org"></a1>
 #document
 | <a1>
-|   xmlns:xml="www.example.org"
+|   {http://www.w3.org/2000/xmlns/}xmlns:xml="www.example.org"
 
 #data
 <a2 xmlns:n1="www.example.org/example2"><n1:a2/></a2>
@@ -81,8 +81,8 @@
 <a9 xmlns="student" id="3"><b name="No NS"></a9>
 #document
 | <{student}a9>
-|   id="3"
 |   {http://www.w3.org/2000/xmlns/}xmlns="student"
+|   id="3"
 |   <{student}b>
 |     name="No NS"
 
@@ -138,3 +138,73 @@
 |       n="v1"
 |     <{www.example.org}v>
 |       n="v2"
+
+#data
+<div xmlns:xml="http://www.w3.org/XML/1998/namespace"></div>
+#document
+| <div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:xml="http://www.w3.org/XML/1998/namespace"
+
+#data
+<foo:div xmlns:foo="urn:foo">x</foo:div>
+#document
+| <{urn:foo}foo:div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
+|   "x"
+
+#data
+<div foo:attr="value" xmlns:foo="urn:foo">x</div>
+#document
+| <div>
+|   {urn:foo}foo:attr="value"
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
+|   "x"
+
+#data
+<div xmlns:foo="urn:foo" foo:attr="value">x</div>
+#document
+| <div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
+|   {urn:foo}foo:attr="value"
+|   "x"
+
+#data
+<div xmlns:foo="urn:foo"><div xmlns:foo="urn:bar" foo:attr="value">x</div></div>
+#document
+| <div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
+|   <div>
+|     {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:bar"
+|     {urn:bar}foo:attr="value"
+|     "x"
+
+#data
+<div xmlns:foo="urn:foo"><div foo:attr="value" xmlns:foo="urn:bar">x</div></div>
+#document
+| <div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
+|   <div>
+|     {urn:bar}foo:attr="value"
+|     {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:bar"
+|     "x"
+
+#data
+<div xmlns:foo="urn:foo"><foo:div xmlns:foo="urn:bar">x</foo:div></div>
+#document
+| <div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
+|   <{urn:bar}foo:div>
+|     {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:bar"
+|     "x"
+
+#data
+<div xmlns:foo="urn:foo" xmlns:foo="urn:foo"></div>
+#document
+| <div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
+
+#data
+<div xmlns:foo="urn:foo" xmlns:foo="urn:bar"></div>
+#document
+| <div>
+|   {http://www.w3.org/2000/xmlns/}xmlns:foo="urn:foo"
